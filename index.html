@@ -15,6 +15,11 @@
   <meta property="og:image" content="images/og-image.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="HabHab">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link rel="icon" type="image/png" href="images/favicon.png">
   <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
 
@@ -62,8 +67,17 @@
       <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3s6 6.2 6 10.500a6 6 0 0 1-12 0C6 9.2 12 3 12 3z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
       <symbol id="i-rice" viewBox="0 0 24 24"><path d="M3 12h18a9 9 0 0 1-18 0z M8 8.500c0-1.5 1-1.5 1-3 M12.5 8.500c0-1.5 1-1.5 1-3 M17 8.500c0-1.5 1-1.5 1-3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
       <symbol id="i-egg" viewBox="0 0 24 24"><path d="M12 3c3.5 0 6.5 5.5 6.5 10a6.5 6.5 0 0 1-13 0C5.5 8.5 8.5 3 12 3z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+      <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+      <symbol id="i-bag" viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7L6 8zM9 8V6a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round"/></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+      <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5 15V6.5A2.5 2.5 0 0 1 7.5 4H15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.500l4.5 4.500L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+      <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
     </defs>
   </svg>
+
+  <img class="logo-fly" src="images/logo-640.webp" width="640" height="640" alt="" aria-hidden="true">
 
   <header class="site-header" id="top">
     <div class="wrap header__bar">
@@ -115,6 +129,7 @@
         <div class="hero__art">
           <div class="hero__glow" aria-hidden="true"></div>
           <div class="hero__float">
+            <div class="hero__steam" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
             <img class="hero__logo" src="images/logo-640.webp" width="640" height="640" fetchpriority="high"
                  alt="HabHab Ta Bai! logo. Premium Street Flavors. Pares, Mami, Pastil, ATBP. Est. 2026.">
           </div>
@@ -147,7 +162,7 @@
       <div class="wrap">
         <div class="section-head">
           <h2 id="menu-title">Pick your bowl</h2>
-          <p>Every bowl comes with calamansi on the side. Rice and egg add-ons are ₱15 each.</p>
+          <p>Tap a bowl for a closer look, then add it to your order to see your total. Extra rice and egg are ₱15 each.</p>
         </div>
 
         <div class="filter" role="group" aria-label="Filter the menu">
@@ -162,107 +177,118 @@
 
         <!-- To change a price, edit the number inside the "dish__price" span of that dish. -->
         <ul class="menu-grid" id="menu-grid">
+          <!-- To change a price, edit data-price on that dish. The coin and your order total update by themselves. -->
 
-          <li class="dish" data-cat="pares">
+          <li class="dish" data-cat="pares" data-id="pares" data-name="Pares" data-price="60">
             <div class="dish__media">
-              <div class="dish__plate"><img src="images/pares.webp" width="800" height="778" loading="lazy" alt="A bowl of pares with toasted garlic, chili and calamansi"></div>
+              <button class="dish__plate" type="button" aria-haspopup="dialog" aria-label="Pares, see details"><img src="images/pares.webp" width="800" height="778" loading="lazy" alt="A bowl of pares with toasted garlic, chili and calamansi"></button>
               <span class="dish__price"><span class="sr">Price </span><small>₱</small>60</span>
             </div>
             <h3 class="dish__name">Pares</h3>
             <p class="dish__desc">Savory pares soup with toasted garlic, spring onion, chili and calamansi.</p>
+            <div class="dish__action" data-slot></div>
           </li>
 
-          <li class="dish" data-cat="pares">
+          <li class="dish" data-cat="pares" data-id="pares-egg" data-name="Pares w/ Egg" data-price="75">
             <div class="dish__media">
-              <div class="dish__plate"><img src="images/pares-egg.webp" width="800" height="778" loading="lazy" alt="A bowl of pares topped with a halved boiled egg"></div>
+              <button class="dish__plate" type="button" aria-haspopup="dialog" aria-label="Pares w/ Egg, see details"><img src="images/pares-egg.webp" width="800" height="778" loading="lazy" alt="A bowl of pares topped with a halved boiled egg"></button>
               <span class="dish__price"><span class="sr">Price </span><small>₱</small>75</span>
             </div>
             <h3 class="dish__name">Pares w/ Egg</h3>
             <p class="dish__desc">Our pares with a halved boiled egg on top.</p>
+            <div class="dish__action" data-slot></div>
           </li>
 
-          <li class="dish" data-cat="pares">
+          <li class="dish" data-cat="pares" data-id="pares-overload" data-name="Pares Overload" data-price="95">
             <div class="dish__media">
-              <div class="dish__plate"><img src="images/pares-overload.webp" width="800" height="778" loading="lazy" alt="Pares Overload bowl with egg, chicharon and siomai"></div>
+              <button class="dish__plate" type="button" aria-haspopup="dialog" aria-label="Pares Overload, see details"><img src="images/pares-overload.webp" width="800" height="778" loading="lazy" alt="Pares Overload bowl with egg, chicharon and siomai"></button>
               <span class="dish__tag">Loaded</span>
               <span class="dish__price"><span class="sr">Price </span><small>₱</small>95</span>
             </div>
             <h3 class="dish__name">Pares Overload</h3>
             <p class="dish__desc">Pares loaded with egg, chicharon and siomai.</p>
+            <div class="dish__action" data-slot></div>
           </li>
 
-          <li class="dish" data-cat="mami">
+          <li class="dish" data-cat="mami" data-id="mami" data-name="Mami" data-price="50">
             <div class="dish__media">
-              <div class="dish__plate"><img src="images/mami.webp" width="800" height="778" loading="lazy" alt="A bowl of mami noodles with toasted garlic, chili and calamansi"></div>
+              <button class="dish__plate" type="button" aria-haspopup="dialog" aria-label="Mami, see details"><img src="images/mami.webp" width="800" height="778" loading="lazy" alt="A bowl of mami noodles with toasted garlic, chili and calamansi"></button>
               <span class="dish__price"><span class="sr">Price </span><small>₱</small>50</span>
             </div>
             <h3 class="dish__name">Mami</h3>
             <p class="dish__desc">Egg noodles in savory broth with toasted garlic and calamansi.</p>
+            <div class="dish__action" data-slot></div>
           </li>
 
-          <li class="dish" data-cat="mami">
+          <li class="dish" data-cat="mami" data-id="mami-egg" data-name="Mami w/ Egg" data-price="65">
             <div class="dish__media">
-              <div class="dish__plate"><img src="images/mami-egg.webp" width="800" height="778" loading="lazy" alt="A bowl of mami topped with a halved boiled egg"></div>
+              <button class="dish__plate" type="button" aria-haspopup="dialog" aria-label="Mami w/ Egg, see details"><img src="images/mami-egg.webp" width="800" height="778" loading="lazy" alt="A bowl of mami topped with a halved boiled egg"></button>
               <span class="dish__price"><span class="sr">Price </span><small>₱</small>65</span>
             </div>
             <h3 class="dish__name">Mami w/ Egg</h3>
             <p class="dish__desc">Our mami with a halved boiled egg on top.</p>
+            <div class="dish__action" data-slot></div>
           </li>
 
-          <li class="dish" data-cat="mami">
+          <li class="dish" data-cat="mami" data-id="mami-overload" data-name="Mami Overload" data-price="95">
             <div class="dish__media">
-              <div class="dish__plate"><img src="images/mami-overload.webp" width="800" height="778" loading="lazy" alt="Mami Overload bowl with egg, chicharon and siomai"></div>
+              <button class="dish__plate" type="button" aria-haspopup="dialog" aria-label="Mami Overload, see details"><img src="images/mami-overload.webp" width="800" height="778" loading="lazy" alt="Mami Overload bowl with egg, chicharon and siomai"></button>
               <span class="dish__tag">Loaded</span>
               <span class="dish__price"><span class="sr">Price </span><small>₱</small>95</span>
             </div>
             <h3 class="dish__name">Mami Overload</h3>
             <p class="dish__desc">Mami loaded with egg, chicharon and siomai.</p>
+            <div class="dish__action" data-slot></div>
           </li>
 
-          <li class="dish" data-cat="pastil">
+          <li class="dish" data-cat="pastil" data-id="pastil" data-name="Pastil" data-price="50">
             <div class="dish__media">
-              <div class="dish__plate"><img src="images/pastil.webp" width="800" height="778" loading="lazy" alt="Pastil: seasoned shredded meat over steamed rice with chili and calamansi"></div>
+              <button class="dish__plate" type="button" aria-haspopup="dialog" aria-label="Pastil, see details"><img src="images/pastil.webp" width="800" height="778" loading="lazy" alt="Pastil: seasoned shredded meat over steamed rice with chili and calamansi"></button>
               <span class="dish__price"><span class="sr">Price </span><small>₱</small>50</span>
             </div>
             <h3 class="dish__name">Pastil</h3>
             <p class="dish__desc">Seasoned shredded meat over steamed rice, with chili and calamansi.</p>
+            <div class="dish__action" data-slot></div>
           </li>
 
-          <li class="dish" data-cat="pastil">
+          <li class="dish" data-cat="pastil" data-id="pastil-egg" data-name="Pastil w/ Egg" data-price="65">
             <div class="dish__media">
-              <div class="dish__plate"><img src="images/pastil-egg.webp" width="800" height="778" loading="lazy" alt="Pastil with a halved boiled egg"></div>
+              <button class="dish__plate" type="button" aria-haspopup="dialog" aria-label="Pastil w/ Egg, see details"><img src="images/pastil-egg.webp" width="800" height="778" loading="lazy" alt="Pastil with a halved boiled egg"></button>
               <span class="dish__price"><span class="sr">Price </span><small>₱</small>65</span>
             </div>
             <h3 class="dish__name">Pastil w/ Egg</h3>
             <p class="dish__desc">Our pastil with a halved boiled egg on the side.</p>
+            <div class="dish__action" data-slot></div>
           </li>
 
-          <li class="dish" data-cat="siomai">
+          <li class="dish" data-cat="siomai" data-id="siomai" data-name="Siomai" data-price="25">
             <div class="dish__media">
-              <div class="dish__plate"><img src="images/siomai.webp" width="800" height="778" loading="lazy" alt="Steamed siomai with chili topping and calamansi"></div>
+              <button class="dish__plate" type="button" aria-haspopup="dialog" aria-label="Siomai, see details"><img src="images/siomai.webp" width="800" height="778" loading="lazy" alt="Steamed siomai with chili topping and calamansi"></button>
               <span class="dish__price"><span class="sr">Price </span><small>₱</small>25</span>
             </div>
             <h3 class="dish__name">Siomai</h3>
             <p class="dish__desc">Steamed siomai topped with chili and served with calamansi.</p>
+            <div class="dish__action" data-slot></div>
           </li>
 
-          <li class="dish" data-cat="siomai">
+          <li class="dish" data-cat="siomai" data-id="siomai-rice" data-name="Siomai Rice" data-price="40">
             <div class="dish__media">
-              <div class="dish__plate"><img src="images/siomai-rice.webp" width="800" height="778" loading="lazy" alt="Siomai served over steamed rice"></div>
+              <button class="dish__plate" type="button" aria-haspopup="dialog" aria-label="Siomai Rice, see details"><img src="images/siomai-rice.webp" width="800" height="778" loading="lazy" alt="Siomai served over steamed rice"></button>
               <span class="dish__price"><span class="sr">Price </span><small>₱</small>40</span>
             </div>
             <h3 class="dish__name">Siomai Rice</h3>
             <p class="dish__desc">Siomai over steamed rice with chili and calamansi.</p>
+            <div class="dish__action" data-slot></div>
           </li>
 
           <li class="dish dish--extras" data-cat="extras">
             <div class="extras">
               <h3 class="extras__title">Drinks and add-ons</h3>
               <ul class="extras__list">
-                <li><svg class="ico" aria-hidden="true"><use href="#i-bottle"/></svg><span class="extras__name">Softdrinks</span><span class="extras__dots" aria-hidden="true"></span><span class="extras__price">₱25</span></li>
-                <li><svg class="ico" aria-hidden="true"><use href="#i-drop"/></svg><span class="extras__name">Water</span><span class="extras__dots" aria-hidden="true"></span><span class="extras__price">₱20</span></li>
-                <li><svg class="ico" aria-hidden="true"><use href="#i-rice"/></svg><span class="extras__name">Extra rice</span><span class="extras__dots" aria-hidden="true"></span><span class="extras__price">₱15</span></li>
-                <li><svg class="ico" aria-hidden="true"><use href="#i-egg"/></svg><span class="extras__name">Extra egg</span><span class="extras__dots" aria-hidden="true"></span><span class="extras__price">₱15</span></li>
+                <li data-id="softdrinks" data-name="Softdrinks" data-price="25"><svg class="ico" aria-hidden="true"><use href="#i-bottle"/></svg><span class="extras__name">Softdrinks</span><span class="extras__dots" aria-hidden="true"></span><span class="extras__price">₱25</span><span class="extras__action" data-slot data-mini></span></li>
+                <li data-id="water" data-name="Water" data-price="20"><svg class="ico" aria-hidden="true"><use href="#i-drop"/></svg><span class="extras__name">Water</span><span class="extras__dots" aria-hidden="true"></span><span class="extras__price">₱20</span><span class="extras__action" data-slot data-mini></span></li>
+                <li data-id="extra-rice" data-name="Extra rice" data-price="15"><svg class="ico" aria-hidden="true"><use href="#i-rice"/></svg><span class="extras__name">Extra rice</span><span class="extras__dots" aria-hidden="true"></span><span class="extras__price">₱15</span><span class="extras__action" data-slot data-mini></span></li>
+                <li data-id="extra-egg" data-name="Extra egg" data-price="15"><svg class="ico" aria-hidden="true"><use href="#i-egg"/></svg><span class="extras__name">Extra egg</span><span class="extras__dots" aria-hidden="true"></span><span class="extras__price">₱15</span><span class="extras__action" data-slot data-mini></span></li>
               </ul>
             </div>
           </li>
@@ -280,13 +306,13 @@
         <ol class="ticket">
           <li class="ticket__step">
             <span class="step__num" aria-hidden="true">1</span>
-            <h3>Choose your bowl</h3>
-            <p>Browse the menu and pick your favorites. Add rice or an egg for ₱15.</p>
+            <h3>Build your order</h3>
+            <p>Tap Add to order on your favorites and check your total before you leave home.</p>
           </li>
           <li class="ticket__step">
             <span class="step__num" aria-hidden="true">2</span>
             <h3 data-step2-title>Visit us at the cart</h3>
-            <p data-step2-text>Come by in front of Deskmark, Narra Avenue, Bayugan City and tell us what you'd like.</p>
+            <p data-step2-text>Come by in front of Deskmark, Narra Avenue, Bayugan City and tap Show at the cart so our crew can serve you fast.</p>
           </li>
           <li class="ticket__step">
             <span class="step__num" aria-hidden="true">3</span>
@@ -330,10 +356,76 @@
     </div>
     <div class="wrap footer__legal">
       <p>&copy; <span data-year>2026</span> HabHab Ta Bai! All rights reserved.</p>
+      <button class="btn btn--ghost btn--sm" id="install-btn" type="button" hidden><svg class="ico" aria-hidden="true"><use href="#i-download"/></svg>Install app</button>
     </div>
   </footer>
 
   <button class="to-top" type="button" aria-label="Back to top"><svg aria-hidden="true"><use href="#i-up"/></svg></button>
+
+
+  <!-- Order bar -->
+  <div class="orderbar" id="orderbar">
+    <button class="orderbar__btn" type="button" aria-haspopup="dialog" aria-controls="order-sheet">
+      <span class="orderbar__bag"><svg class="ico" aria-hidden="true"><use href="#i-bag"/></svg><b class="orderbar__count">0</b></span>
+      <span class="orderbar__label">Your order</span>
+      <span class="orderbar__total">₱0</span>
+    </button>
+  </div>
+
+  <!-- Order sheet -->
+  <div class="layer-backdrop" id="sheet-backdrop"></div>
+  <aside class="sheet" id="order-sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" aria-hidden="true" inert>
+    <div class="sheet__head">
+      <h2 id="sheet-title">Your order</h2>
+      <button class="icon-btn" type="button" data-close="sheet" aria-label="Close your order"><svg class="ico" aria-hidden="true"><use href="#i-close"/></svg></button>
+    </div>
+    <div class="sheet__body">
+      <ul class="lines" id="lines"></ul>
+      <p class="sheet__empty" id="sheet-empty">Nothing here yet. Pick a bowl from the menu to start your order.</p>
+    </div>
+    <div class="sheet__foot">
+      <div class="sum"><span>Total</span><strong id="sheet-total" aria-live="polite">₱0</strong></div>
+      <p class="sheet__note">Your total is a guide for your budget. Pay at the cart.</p>
+      <button class="btn btn--solid btn--block" id="show-order" type="button">Show at the cart</button>
+      <div class="sheet__row">
+        <button class="btn btn--ghost btn--sm" id="copy-order" type="button"><svg class="ico" aria-hidden="true"><use href="#i-copy"/></svg>Copy order</button>
+        <a class="btn btn--ghost btn--sm" id="msg-order" href="#" hidden></a>
+        <button class="linkbtn" id="clear-order" type="button">Clear order</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Dish details -->
+  <div class="dm" id="dish-modal" role="dialog" aria-modal="true" aria-labelledby="dm-name" aria-hidden="true" inert>
+    <div class="dm__backdrop" data-close="dish"></div>
+    <div class="dm__card">
+      <button class="icon-btn dm__close" type="button" data-close="dish" aria-label="Close details"><svg class="ico" aria-hidden="true"><use href="#i-close"/></svg></button>
+      <div class="dm__figure">
+        <div class="dm__img"><img src="" alt="" width="800" height="778"></div>
+        <span class="dish__price dm__coin" id="dm-price"></span>
+      </div>
+      <div class="dm__info">
+        <h2 class="dm__name" id="dm-name"></h2>
+        <p class="dm__desc" id="dm-desc"></p>
+        <div class="dm__action" id="dm-slot" data-slot data-scope="modal"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Show at the cart -->
+  <div class="tv" id="ticketview" role="dialog" aria-modal="true" aria-labelledby="tv-title" aria-hidden="true" inert>
+    <div class="tv__paper">
+      <img class="tv__logo" src="images/logo-640.webp" width="96" height="96" alt="">
+      <h2 id="tv-title">Show this to our crew</h2>
+      <p class="tv__time" id="tv-time"></p>
+      <ul class="tv__lines" id="tv-lines"></ul>
+      <div class="tv__total"><span>Total</span><strong id="tv-total"></strong></div>
+      <p class="tv__where" id="tv-where"></p>
+      <button class="btn btn--solid btn--block" id="tv-close" type="button">Back to my order</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="js/config.js"></script>
   <script src="js/main.js"></script>
