@@ -26,6 +26,6 @@ window.SITE_CONFIG = {
 
   // Opening hours. Add one line per row, e.g. { days: "Monday to Saturday", time: "4:00 PM to 11:00 PM" }
   hours: [
-    // { days: "Monday to Saturday", time: "4:00 PM to 11:00 PM" },
+    { days: "Open hours", time: "7:00 PM to 12:00 AM" }
   ]
 };

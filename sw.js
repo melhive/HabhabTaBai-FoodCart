@@ -3,7 +3,7 @@
    - Serves the saved copy instantly, then quietly refreshes it in the background,
      so price or menu changes show up on the next visit.
    - When you publish changes, raise the number in VERSION to clear old files. */
-const VERSION = 'habhab-v3';
+const VERSION = 'habhab-v12';
 
 const CORE = [
   './',
@@ -13,6 +13,18 @@ const CORE = [
   'js/main.js',
   'manifest.webmanifest',
   'images/logo-640.webp',
+  'images/pares-480.webp',
+  'images/pares-egg-480.webp',
+  'images/pares-overload-480.webp',
+  'images/mami-480.webp',
+  'images/mami-egg-480.webp',
+  'images/mami-overload-480.webp',
+  'images/pastil-480.webp',
+  'images/pastil-egg-480.webp',
+  'images/siomai-480.webp',
+  'images/siomai-rice-480.webp',
+  'images/logo-128.webp',
+  'images/logo-256.webp',
   'images/favicon.png',
   'images/apple-touch-icon.png',
   'images/icon-192.png',

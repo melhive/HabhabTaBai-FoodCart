@@ -83,8 +83,7 @@ svg{display:block}
   transition:background-color .4s,box-shadow .4s,backdrop-filter .4s,transform .4s var(--ease);
 }
 .site-header.is-scrolled{
-  background:rgba(27,14,7,.84);
-  -webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2);
+  background:rgba(27,14,7,.94);
   box-shadow:0 1px 0 rgba(251,240,220,.1),0 10px 30px rgba(0,0,0,.3);
 }
 .header__bar{height:100%;display:flex;align-items:center;gap:28px}
@@ -397,27 +396,9 @@ svg{display:block}
 .linkbtn:hover{opacity:1}
 .ico{width:20px;height:20px;flex:none}
 
-/* steam rising from behind the logo badge */
-.hero__logo{position:relative;z-index:1}
-.hero__steam{position:absolute;left:24%;right:24%;top:-26%;height:44%;z-index:0;pointer-events:none}
-.hero__steam i{
-  position:absolute;bottom:0;width:34%;aspect-ratio:1;border-radius:50%;
-  background:radial-gradient(circle,rgba(255,244,225,.55),rgba(255,244,225,0) 68%);
-  filter:blur(7px);opacity:0;animation:puff 5.4s ease-out infinite;
-}
-.hero__steam i:nth-child(1){left:2%;animation-delay:1.6s}
-.hero__steam i:nth-child(2){left:24%;animation-delay:2.7s;animation-duration:6.2s}
-.hero__steam i:nth-child(3){left:42%;animation-delay:1.9s}
-.hero__steam i:nth-child(4){left:60%;animation-delay:3.4s;animation-duration:6.6s}
-.hero__steam i:nth-child(5){left:34%;animation-delay:4.4s;animation-duration:5.8s}
-@keyframes puff{
-  0%{opacity:0;transform:translate(0,0) scale(.5)}
-  25%{opacity:.7}
-  100%{opacity:0;transform:translate(14px,-210%) scale(1.7)}
-}
 
 /* logo travels into the header while you scroll */
-.logo-fly{position:fixed;left:0;top:0;z-index:120;pointer-events:none;transform-origin:0 0;visibility:hidden;will-change:transform;filter:drop-shadow(0 6px 10px rgba(0,0,0,.4))}
+.logo-fly{position:fixed;left:0;top:0;z-index:120;pointer-events:none;transform-origin:0 0;visibility:hidden;will-change:transform}
 .logo-fly.on{visibility:visible}
 .travel .brand{visibility:hidden;opacity:0;transition:opacity .35s,visibility 0s .35s}
 .travel.arrived .brand{visibility:visible;opacity:1;transition:opacity .35s}
@@ -629,7 +610,7 @@ body.has-order .site-footer{padding-bottom:110px}
 }
 /* back to top: small, quiet, above the order bar on phones */
 .to-top{width:44px;height:44px;left:auto;right:16px;background:rgba(27,14,7,.82);color:var(--mustard);
-  border:2px solid var(--mustard);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);box-shadow:0 8px 20px rgba(0,0,0,.45)}
+  border:2px solid var(--mustard);box-shadow:0 8px 20px rgba(0,0,0,.45)}
 .to-top svg{width:20px;height:20px}
 body.has-order .to-top{bottom:calc(92px + env(safe-area-inset-bottom))}
 @media (min-width:760px){
@@ -645,6 +626,171 @@ body.has-order .to-top{bottom:calc(92px + env(safe-area-inset-bottom))}
   .menu-grid{gap:36px 14px}
 }
 
+
+/* save / share the order image */
+.tv__actions{display:grid;gap:10px}
+.tv .btn--ghost{border-color:rgba(43,23,14,.3);color:var(--ink);background:transparent}
+.tv .btn--ghost:hover{border-color:var(--maroon);background:rgba(123,29,21,.08)}
+.tv__hint{margin-top:14px;font-size:.88rem;color:rgba(43,23,14,.65)}
+.btn[disabled]{opacity:.6;pointer-events:none}
+
+
+/* header: logo + name stay on the left on every screen size; menu button on the right */
+@media (max-width:900px){
+  .burger{margin-left:auto}
+}
+
+
+/* ==========================================================
+   v3: living background, embers, gliding filter, swipe, suggestion
+   ========================================================== */
+body{position:relative}
+main,.site-footer{position:relative;z-index:1}
+.ambient{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;animation:flicker 7s ease-in-out infinite alternate}
+.ambient__a,.ambient__b{position:absolute;width:90vmax;height:90vmax;border-radius:50%;will-change:transform}
+.ambient__a{left:-34vmax;top:-26vmax;background:radial-gradient(circle,rgba(236,122,28,.28),transparent 62%)}
+.ambient__b{right:-40vmax;bottom:-34vmax;background:radial-gradient(circle,rgba(123,29,21,.42),transparent 62%)}
+@keyframes flicker{0%{opacity:.75}30%{opacity:1}55%{opacity:.84}100%{opacity:1}}
+.drift{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.drift svg{position:absolute}
+.lite .ambient{animation:none}
+.lite .drift{display:none}
+
+.hero__when{margin-top:10px}
+.hero__when .ico{color:var(--coin)}
+
+/* photos fade in softly */
+.dish__plate img{transition:transform .9s var(--ease),opacity .9s ease}
+.js .dish__plate img:not(.loaded){opacity:0}
+
+/* order sheet: grip + suggestion */
+.sheet__grip{position:absolute;top:9px;left:50%;width:46px;height:5px;margin-left:-23px;border-radius:3px;background:rgba(43,23,14,.22)}
+.sheet__head{position:relative;touch-action:none;cursor:grab}
+.sheet__head h2{cursor:inherit}
+@media (min-width:760px){.sheet__grip{display:none}.sheet__head{touch-action:auto;cursor:auto}}
+@media (max-width:759px){.sheet__head{padding-top:26px}}
+.suggest{margin:6px 0 10px;padding:14px 14px 16px;border-radius:18px;background:rgba(123,29,21,.07);border:2px dashed rgba(123,29,21,.25);animation:linein .5s var(--ease)}
+.suggest[hidden]{display:none}
+.suggest__title{font:800 1.05rem/1.2 var(--serif);color:var(--maroon);margin-bottom:10px}
+.suggest__chips{display:flex;flex-wrap:wrap;gap:8px}
+.suggest__chip{
+  display:inline-flex;align-items:center;gap:8px;padding:.55rem .95rem;border-radius:999px;cursor:pointer;
+  border:2px solid var(--maroon);background:transparent;color:var(--maroon);font:700 .92rem/1 var(--sans);
+  transition:background-color .3s,color .3s,transform .4s var(--spring);
+}
+.suggest__chip .ico{width:16px;height:16px}
+.suggest__chip b{font-family:var(--serif);color:var(--coin-deep);transition:color .3s}
+.suggest__chip:hover{background:var(--maroon);color:var(--cream);transform:translateY(-2px)}
+.suggest__chip:hover b{color:var(--mustard-soft)}
+.suggest__chip:active{transform:scale(.95)}
+
+
+/* ---------- steam: a soft plume curling up from behind the badge ---------- */
+.hero__logo{position:relative;z-index:1}
+.hero__steam{position:absolute;left:28%;right:28%;top:-24%;height:40%;z-index:0;pointer-events:none}
+.hero__steam i{
+  position:absolute;bottom:0;left:var(--l);width:48%;height:72%;border-radius:55% 45% 50% 50% / 60% 60% 40% 40%;
+  background:radial-gradient(ellipse at 50% 72%,rgba(255,240,220,.5),rgba(255,236,210,.16) 46%,rgba(255,236,210,0) 72%);
+  filter:blur(9px);opacity:0;will-change:transform,opacity;
+  animation:wisp var(--t) ease-out var(--dl) infinite;
+}
+.hero__steam i:nth-child(1){--l:0%;--t:7.2s;--dl:0s;--sx:-16px;--r:-14deg}
+.hero__steam i:nth-child(2){--l:22%;--t:8.4s;--dl:1.3s;--sx:14px;--r:12deg}
+.hero__steam i:nth-child(3){--l:46%;--t:7.6s;--dl:2.4s;--sx:-12px;--r:-10deg}
+.hero__steam i:nth-child(4){--l:12%;--t:9s;--dl:3.5s;--sx:18px;--r:16deg}
+.hero__steam i:nth-child(5){--l:36%;--t:8s;--dl:4.6s;--sx:-18px;--r:-16deg}
+.hero__steam i:nth-child(6){--l:54%;--t:8.8s;--dl:5.7s;--sx:12px;--r:10deg}
+.hero__steam i:nth-child(7){--l:28%;--t:7.8s;--dl:6.6s;--sx:-10px;--r:-8deg}
+@keyframes wisp{
+  0%{opacity:0;transform:translate(0,10%) scale(.5,.35) rotate(0)}
+  16%{opacity:.9}
+  55%{opacity:.55;transform:translate(var(--sx),-80%) scale(1,.95) rotate(var(--r))}
+  100%{opacity:0;transform:translate(calc(var(--sx) * -.7),-175%) scale(1.5,1.3) rotate(calc(var(--r) * -1.2))}
+}
+.hero__glow{background:radial-gradient(circle,rgba(245,179,53,.5),rgba(236,122,28,.2) 42%,transparent 66%)}
+
+/* ---------- embers: bright, swaying, flickering sparks ---------- */
+.hero__embers{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.ambient__embers{position:absolute;inset:0;overflow:hidden}
+
+/* ---------- slow drifting smoke across the whole background ---------- */
+.ambient__smoke{position:absolute;width:150vmax;height:46vmax;border-radius:50%;will-change:transform;
+  background:radial-gradient(closest-side,rgba(255,236,210,.085),rgba(255,236,210,0))}
+.ambient__s1{left:-40vmax;top:6vh;animation:smokeA 46s ease-in-out infinite alternate}
+.ambient__s2{right:-50vmax;top:52vh;animation:smokeB 58s ease-in-out infinite alternate;opacity:.8}
+@keyframes smokeA{from{transform:translate3d(-8vmax,0,0) rotate(-7deg)}to{transform:translate3d(26vmax,10vh,0) rotate(5deg)}}
+@keyframes smokeB{from{transform:translate3d(10vmax,0,0) rotate(6deg)}to{transform:translate3d(-26vmax,-8vh,0) rotate(-6deg)}}
+.lite .ambient__smoke{animation:none}
+
+/* ---------- drinks and add-ons: icon, name + price, one add control ---------- */
+.extras__list{gap:8px 36px}
+.extras__list li{display:grid;grid-template-columns:auto 1fr auto;align-items:center;column-gap:14px;padding:10px 12px;border-radius:16px;font-weight:600;transition:background-color .35s}
+.extras__list li.is-added{background:rgba(123,29,21,.09)}
+.extras__list li > .ico{width:30px;height:30px;color:var(--maroon)}
+.extras__text{display:grid;gap:2px;line-height:1.15}
+.extras__name{font-weight:700;font-size:1.08rem}
+.extras__price{font:800 1.05rem/1 var(--serif);color:var(--coin-deep)}
+.extras__dots{display:none}
+.extras__action{min-width:104px;display:flex;justify-content:flex-end}
+.extras .add-btn .ico,.extras .qty .ico{width:20px;height:20px;color:inherit}
+.add-btn--mini{width:44px;height:44px;color:var(--cream)}
+.qty--mini button{width:36px;height:36px}
+@media (max-width:420px){ .extras__action{min-width:96px} .extras__list li{column-gap:10px;padding:10px 8px} }
+
+
+/* price coins: number only, larger to fill the circle */
+.dish__price{width:68px;height:68px;font-size:1.95rem;letter-spacing:-.02em;font-weight:800}
+.dm__coin{width:88px;height:88px;font-size:2.5rem;right:-10px}
+@media (max-width:420px){
+  .dish__price{width:62px;height:62px;font-size:1.7rem;right:-5px}
+}
+
+
+/* price coins: snugger circle, same number size */
+.dish__price{width:56px;height:56px;font-size:1.95rem;right:-2px;bottom:3%}
+.dm__coin{width:74px;height:74px;font-size:2.5rem;right:-4px}
+@media (max-width:420px){
+  .dish__price{width:52px;height:52px;font-size:1.7rem;right:-2px}
+}
+
+
+/* "Show this to our crew": bigger logo, same layout box so nothing else moves */
+.tv__logo{width:108px;height:108px;margin:-12px auto -6px;position:relative}
+
+
+/* ==========================================================
+   v4 audit: lighter embers, coin always visible, pause off-screen
+   ========================================================== */
+/* embers: one layer each; the sway and flicker live inside a single keyframe set */
+.embers i{
+  position:absolute;bottom:-16px;left:var(--x);width:var(--s);height:var(--s);opacity:0;
+  animation:ember var(--t) linear var(--dl) infinite;
+}
+.embers i b{display:block;width:100%;height:100%;border-radius:50%;
+  background:radial-gradient(circle,var(--c,#ffd074) 0 38%,rgba(255,138,60,0) 72%);
+  box-shadow:0 0 calc(var(--s) * 2.4) calc(var(--s) * .45) rgba(255,150,50,.55)}
+.embers.is-paused i{animation-play-state:paused}
+@keyframes ember{
+  0%{opacity:0;transform:translate3d(0,0,0) scale(.8)}
+  8%{opacity:1}
+  20%{opacity:.6;transform:translate3d(calc(var(--dx) * .2 + 10px),-22vh,0) scale(.95)}
+  32%{opacity:1}
+  46%{opacity:.7;transform:translate3d(calc(var(--dx) * .45 - 10px),-48vh,0)}
+  60%{opacity:1}
+  74%{opacity:.55;transform:translate3d(calc(var(--dx) * .7 + 8px),-72vh,0) scale(.7)}
+  100%{opacity:0;transform:translate3d(var(--dx),-108vh,0) scale(.35)}
+}
+/* when the hero or the banner is off-screen, its animations rest */
+.hero.is-off *,.hero.is-off *::before,.hero.is-off *::after{animation-play-state:paused!important}
+.marquee.is-off .marquee__track{animation-play-state:paused}
+/* the price coin is always visible; it only gives a small pop when its bowl appears */
+@keyframes coin{0%{transform:scale(.55) rotate(-90deg)}100%{transform:none}}
+.js .dish.in .dish__price{animation:coin .5s var(--spring) both;animation-delay:calc(var(--sd,0) * 45ms + .06s)}
+.js .dish.in.instant,.js .dish.in.instant .dish__price{transition:none;animation:none}
+/* heavy blur only where it is cheap */
+.lite .layer-backdrop,.lite .dm__backdrop{-webkit-backdrop-filter:none;backdrop-filter:none}
+.dm__coin{animation:coin .6s var(--spring) .3s both}
+
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
@@ -652,5 +798,8 @@ body.has-order .to-top{bottom:calc(92px + env(safe-area-inset-bottom))}
   .js .dish{opacity:1;transform:none}
   .marquee__track{animation:none}
   .hero__steam{display:none}
+  .embers{display:none}
+  .ambient__smoke{animation:none}
+  .ambient{animation:none}
   .js .split .w>span{transform:none}
 }
