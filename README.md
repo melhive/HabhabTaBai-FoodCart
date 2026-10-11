@@ -1,4 +1,4 @@
-# HabHab Ta Bai! website.
+# HabHab Ta Bai! website
 
 A static site (HTML, CSS, JavaScript) that also works as an installable, offline-ready app (PWA).
 No build step, no frameworks.
