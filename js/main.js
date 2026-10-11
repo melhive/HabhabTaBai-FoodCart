@@ -466,6 +466,17 @@
     Object.keys(raw).forEach(k => { const q = parseInt(raw[k], 10); if (catalog[k] && q > 0) order[k] = Math.min(q, MAX); });
   } catch (e) { order = {}; }
   const save = () => { try { localStorage.setItem(STORE, JSON.stringify(order)); } catch (e) { /* storage off: order still works this visit */ } };
+  // name and arrival time for this order (the name is remembered on this phone)
+  const NAME_KEY = 'habhab-name-v1';
+  const cleanName = (v) => String(v || '').replace(/[\u0000-\u001F\u007F<>]/g, '').replace(/\s+/g, ' ').slice(0, 20);
+  const details = { name: '', arrive: null, arriveAt: 0 };
+  try { details.name = cleanName(localStorage.getItem(NAME_KEY) || ''); } catch (e) { /* ignore */ }
+  const fmtTime = (ms) => new Date(ms).toLocaleTimeString('en-PH', { hour: 'numeric', minute: '2-digit' });
+  const arriveText = () => {
+    if (details.arrive === null) return '';
+    const t = fmtTime(details.arriveAt);
+    return details.arrive === 0 ? 'Arriving now (' + t + ')' : 'Arriving around ' + t + ' (in ' + details.arrive + ' min)';
+  };
   const count = () => Object.keys(order).reduce((a, k) => a + order[k], 0);
   const total = () => Object.keys(order).reduce((a, k) => a + order[k] * catalog[k].price, 0);
 
@@ -502,7 +513,22 @@
     }).join('');
     sheetTotal.textContent = peso(total());
     renderSuggest();
+    renderDetails();
   };
+  const detailsBox = $('#order-details'); const nameInput = $('#order-name'); const arriveRadios = $$('input[name="arrive"]');
+  const renderDetails = () => { detailsBox.hidden = !count(); };
+  nameInput.value = details.name;
+  nameInput.addEventListener('input', () => {
+    details.name = cleanName(nameInput.value);
+    if (nameInput.value !== details.name) nameInput.value = details.name;
+    try { localStorage.setItem(NAME_KEY, details.name.trim()); } catch (e) { /* ignore */ }
+  });
+  nameInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); nameInput.blur(); } });
+  arriveRadios.forEach(r => r.addEventListener('click', () => {
+    const v = Number(r.value);
+    if (details.arrive === v) { details.arrive = null; r.checked = false; }   // tap again to undo
+    else { details.arrive = v; details.arriveAt = Date.now() + v * 60000; }
+  }));
   const suggestBox = $('#suggest');
   const renderSuggest = () => {
     const hasBowl = Object.keys(order).some(id => catalog[id] && catalog[id].cat !== 'extras');
@@ -659,7 +685,8 @@
 
   const orderText = () => {
     const lines = Object.keys(order).map(id => order[id] + ' x ' + catalog[id].name + ' - ' + peso(order[id] * catalog[id].price));
-    return ['HabHab Ta Bai! order', ...lines, 'Total: ' + peso(total()), address ? 'Pickup: ' + address : ''].filter(Boolean).join('\n');
+    const nm = details.name.trim(); const ar = arriveText();
+    return ['HabHab Ta Bai! order', nm ? 'Name: ' + nm : '', ar, ...lines, 'Total: ' + peso(total()), address ? 'Pickup: ' + address : ''].filter(Boolean).join('\n');
   };
   const copyText = async (text) => {
     try { await navigator.clipboard.writeText(text); return true; } catch (e) { /* fall back below */ }
@@ -677,7 +704,7 @@
   function msgBtnUpdate() {
     const m = contacts.find(c => c.kind === 'messenger'); const ph = contacts.find(c => c.kind === 'phone');
     if (m) {
-      msgBtn.hidden = false; msgBtn.textContent = ''; msgBtn.appendChild(svgIcon('i-messenger')); msgBtn.appendChild(document.createTextNode('Send on Messenger'));
+      msgBtn.hidden = false; msgBtn.textContent = ''; msgBtn.appendChild(svgIcon('i-messenger')); msgBtn.appendChild(document.createTextNode('Send to our Facebook page'));
       msgBtn.href = m.href; msgBtn.target = '_blank'; msgBtn.rel = 'noopener';
       msgBtn.onclick = () => { copyText(orderText()).then(ok => { if (ok) toast('Order copied. Paste it in the chat.'); }); };
     } else if (ph) {
@@ -688,7 +715,7 @@
 
   $('#clear-order').addEventListener('click', () => {
     if (!count()) return;
-    order = {}; save(); renderSlots(); renderLines(); barVisibility(); renderBar(false);
+    order = {}; save(); details.arrive = null; arriveRadios.forEach(r => { r.checked = false; }); renderSlots(); renderLines(); barVisibility(); renderBar(false);
     toast('Order cleared.');
     closeSheet();
   });
@@ -701,6 +728,8 @@
       '<li><span class="q">' + order[id] + '</span><span>' + esc(catalog[id].name) + '</span><span class="p">' + peso(order[id] * catalog[id].price) + '</span></li>').join('');
     $('#tv-total').textContent = peso(total());
     $('#tv-time').textContent = new Date().toLocaleString('en-PH', { dateStyle: 'medium', timeStyle: 'short' });
+    const nmT = details.name.trim(); const nmEl = $('#tv-name'); nmEl.textContent = nmT ? 'For ' + nmT : ''; nmEl.hidden = !nmT;
+    const arT = arriveText(); const arEl = $('#tv-arrive'); arEl.textContent = arT; arEl.hidden = !arT;
     $('#tv-where').textContent = address ? 'Find us ' + address.charAt(0).toLowerCase() + address.slice(1) : '';
     tv.classList.add('is-open');
     showLayer(tv, closeTicket);
@@ -730,6 +759,7 @@
     const W = 1080, PAD = 72, ROW = 108;
     const ids = Object.keys(order);
     const when = new Date().toLocaleString('en-PH', { dateStyle: 'medium', timeStyle: 'short' });
+    const nm = details.name.trim(); const ar = arriveText();
     const where = address ? 'Find us ' + address.charAt(0).toLowerCase() + address.slice(1) : '';
 
     const render = (ctx, draw) => {
@@ -743,6 +773,14 @@
       y += 52 + 26;
       if (draw) { ctx.fillStyle = 'rgba(43,23,14,.66)'; ctx.font = '500 32px ' + SANS; ctx.fillText(when, W / 2, y + 28); }
       y += 28 + 40;
+      if (nm) {
+        if (draw) { ctx.fillStyle = '#7b1d15'; ctx.font = '800 70px ' + SERIF; ctx.fillText('For ' + nm, W / 2, y + 54); }
+        y += 54 + 24;
+      }
+      if (ar) {
+        if (draw) { ctx.fillStyle = '#2b170e'; ctx.font = '700 36px ' + SANS; ctx.fillText(ar, W / 2, y + 32); }
+        y += 32 + 34;
+      }
       const dash = () => { if (!draw) return; ctx.save(); ctx.setLineDash([16, 12]); ctx.strokeStyle = 'rgba(123,29,21,.38)'; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(PAD, y); ctx.lineTo(W - PAD, y); ctx.stroke(); ctx.restore(); };
       dash();
       ids.forEach(id => {
@@ -805,20 +843,35 @@
       toast('Saved as an image. Check your Downloads or Gallery.', 4200);
     });
   });
-  const shareBtn = $('#tv-share');
+  const shareBtn = $('#tv-share'); const fbContact = contacts.find(c => c.kind === 'messenger');
+  const setBtn = (btn, iconId, label) => {
+    btn.textContent = ''; btn.appendChild(svgIcon(iconId));
+    const s = document.createElement('span'); s.textContent = label; btn.appendChild(s);
+  };
   const canShareFiles = () => {
     try { return !!(navigator.share && navigator.canShare && navigator.canShare({ files: [new File(['x'], 'a.png', { type: 'image/png' })] })); } catch (err) { return false; }
   };
-  if (canShareFiles()) shareBtn.hidden = false;
-  shareBtn.addEventListener('click', (e) => {
-    withBusy(e.currentTarget, 'Preparing...', async () => {
-      const blob = await buildOrderImage();
-      if (!blob) { toast('Could not make the image. Try Save as image.', 4000); return; }
-      const file = new File([blob], orderFileName(), { type: 'image/png' });
-      try { await navigator.share({ files: [file], title: 'My HabHab Ta Bai! order', text: orderText() }); }
-      catch (err) { if (!err || err.name !== 'AbortError') toast('Could not share. Try Save as image.', 4000); }
+  if (fbContact) {
+    // straight to the Facebook page chat: the order text is copied first, the customer pastes it and sends
+    shareBtn.hidden = false; setBtn(shareBtn, 'i-messenger', 'Send to our Facebook page');
+    shareBtn.href = fbContact.href; shareBtn.target = '_blank'; shareBtn.rel = 'noopener';
+    shareBtn.addEventListener('click', () => {
+      copyText(orderText()).then(ok => toast(ok ? 'Order copied. Paste it in the chat and tap send.' : 'Could not copy. Use Save as image and attach it in the chat.', 5500));
     });
-  });
+    const hint = $('#tv-hint'); if (hint) hint.textContent = 'Tap Send to our Facebook page. Your order is copied, so paste it in the chat and send. Or save the image and show it at the cart.';
+  } else if (canShareFiles()) {
+    shareBtn.hidden = false; setBtn(shareBtn, 'i-send', 'Share order image');
+    shareBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      withBusy(shareBtn, 'Preparing...', async () => {
+        const blob = await buildOrderImage();
+        if (!blob) { toast('Could not make the image. Try Save as image.', 4000); return; }
+        const file = new File([blob], orderFileName(), { type: 'image/png' });
+        try { await navigator.share({ files: [file], title: 'My HabHab Ta Bai! order', text: orderText() }); }
+        catch (err) { if (!err || err.name !== 'AbortError') toast('Could not share. Try Save as image.', 4000); }
+      });
+    });
+  }
 
   /* =========================================================
      Dish details (tap a bowl)

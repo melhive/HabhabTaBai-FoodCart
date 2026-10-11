@@ -403,6 +403,20 @@
         <p class="suggest__title">Add rice or egg?</p>
         <div class="suggest__chips"></div>
       </div>
+      <div class="details" id="order-details" hidden>
+        <div class="field">
+          <label for="order-name">Name for your order</label>
+          <input id="order-name" type="text" maxlength="20" autocomplete="given-name" enterkeyhint="done" placeholder="So we know who to call">
+        </div>
+        <fieldset class="field arrive">
+          <legend>When will you arrive?</legend>
+          <div class="arrive__chips">
+            <label class="pill"><input type="radio" name="arrive" value="0"><span>Now</span></label>
+            <label class="pill"><input type="radio" name="arrive" value="15"><span>In 15 min</span></label>
+            <label class="pill"><input type="radio" name="arrive" value="30"><span>In 30 min</span></label>
+          </div>
+        </fieldset>
+      </div>
     </div>
     <div class="sheet__foot">
       <div class="sum"><span>Total</span><strong id="sheet-total" aria-live="polite">₱0</strong></div>
@@ -439,15 +453,17 @@
       <img class="tv__logo" src="images/logo-256.webp" width="96" height="96" alt="">
       <h2 id="tv-title">Show this to our crew</h2>
       <p class="tv__time" id="tv-time"></p>
+      <p class="tv__name" id="tv-name" hidden></p>
+      <p class="tv__arrive" id="tv-arrive" hidden></p>
       <ul class="tv__lines" id="tv-lines"></ul>
       <div class="tv__total"><span>Total</span><strong id="tv-total"></strong></div>
       <p class="tv__where" id="tv-where"></p>
       <div class="tv__actions">
         <button class="btn btn--solid btn--block" id="tv-save" type="button"><svg class="ico" aria-hidden="true"><use href="#i-download"/></svg><span>Save as image</span></button>
-        <button class="btn btn--ghost btn--block" id="tv-share" type="button" hidden><svg class="ico" aria-hidden="true"><use href="#i-send"/></svg><span>Share or send to our page</span></button>
+        <a class="btn btn--ghost btn--block" id="tv-share" href="#" hidden><svg class="ico" aria-hidden="true"><use href="#i-send"/></svg><span>Share order image</span></a>
         <button class="btn btn--ghost btn--block" id="tv-close" type="button">Back to my order</button>
       </div>
-      <p class="tv__hint">Save the image, then show it at the cart or attach it in a message to our page.</p>
+      <p class="tv__hint" id="tv-hint">Save the image, then show it at the cart or attach it in a message to our page.</p>
     </div>
   </div>
 

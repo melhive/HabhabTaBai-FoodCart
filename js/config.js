@@ -7,7 +7,8 @@ window.SITE_CONFIG = {
   // Phone number for calls, e.g. "+639171234567"
   phone: "",
 
-  // Facebook Messenger link, e.g. "https://m.me/yourpagename"
+  // Your Facebook page chat link. Use https://m.me/ followed by your page username, e.g. "https://m.me/habhabtabai"
+  // This turns on the "Send to our Facebook page" button.
   messenger: "",
 
   // Social pages (full web addresses)

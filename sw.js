@@ -3,7 +3,7 @@
    - Serves the saved copy instantly, then quietly refreshes it in the background,
      so price or menu changes show up on the next visit.
    - When you publish changes, raise the number in VERSION to clear old files. */
-const VERSION = 'habhab-v12';
+const VERSION = 'habhab-v13';
 
 const CORE = [
   './',
