@@ -9,10 +9,10 @@ window.SITE_CONFIG = {
 
   // Your Facebook page chat link. Use https://m.me/ followed by your page username, e.g. "https://m.me/habhabtabai"
   // This turns on the "Send to our Facebook page" button.
-  messenger: "",
+  messenger: "m.me/1365866053267173",
 
   // Social pages (full web addresses)
-  facebook: "",
+  facebook: "https://web.facebook.com/profile.php?id=61594376848192",
   instagram: "",
   tiktok: "",
 
